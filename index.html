@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinamik Quiz Uygulaması</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<button id="dark-mode-toggle" class="btn btn-dark position-absolute top-0 end-0 m-4 shadow">
+🌙
+</button>
+
+<!-- Nickname Screen -->
+<div id="nickname-screen" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4"> <!-- Kartın genişliğini burada sınırladık -->
+            <div class="card shadow-lg p-5 text-center">
+                <h1 class="mb-4">🎮 Quiz Oyunu</h1>
+                <p class="lead mb-4">Devam etmek için bir kullanıcı adı gir.</p>
+                <input
+                    type="text"
+                    id="nickname-input"
+                    class="form-control form-control-lg mb-4 text-center"
+                    placeholder="Nickname gir..."
+                >
+                <button
+                    id="nickname-btn"
+                    class="btn btn-primary btn-lg w-100">
+                    Devam Et
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="home-screen" class="container text-center mt-5 d-none animate_animated animate_fadeIn">
+    <h1 class="display-4 mb-4 font-weight-bold">Bilgi Yarışması</h1>
+    <p class="lead text-white">Bir kategori seç ve bilgini kanıtla!</p>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-3 mb-3">
+            <button class="btn btn-outline-primary btn-lg w-100 category-btn" data-category="bayrak">🚩 Bayrak</button>
+        </div>
+        <div class="col-md-3 mb-3">
+            <button class="btn btn-outline-success btn-lg w-100 category-btn" data-category="baskent">🏙️ Başkent</button>
+        </div>
+        <div class="col-md-3 mb-3">
+            <button class="btn btn-outline-danger btn-lg w-100 category-btn" data-category="marka">🚗 Marka</button>
+        </div>
+    </div>
+    <button id="start-game-btn" class="btn btn-dark btn-lg mt-5 px-5" disabled>Oyunu Başlat</button>
+</div>
+
+<div id="quiz-screen" class="container mt-5 d-none animate_animated animate_zoomIn">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center">
+                        <button id="home-icon-btn" class="btn btn-outline-secondary btn-sm me-3" title="Ana Sayfaya Dön">🏠</button>
+                        <span id="question-count" class="badge bg-primary p-2">Soru: 1 / 5</span>
+                        <span id="timer" class="badge bg-danger p-2 ms-2">Süre: 10</span>
+                    </div>
+                    <div class="progress w-50" style="height: 12px;">
+                        <div id="progress-bar" class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: 20%"></div>
+                    </div>
+                </div>
+                <div class="card-body text-center p-5">
+                    <div id="question-area" class="mb-4">
+                        <h2 id="question-text" class="mb-4 fw-bold">Soru metni...</h2>
+                        <img id="question-img" src="" class="img-fluid d-none shadow-sm" alt="Soru görseli">
+                    </div>
+                    <div id="options-area" class="d-grid gap-3">
+                        <button class="btn btn-outline-secondary option-btn py-3 text-start px-4"></button>
+                        <button class="btn btn-outline-secondary option-btn py-3 text-start px-4"></button>
+                        <button class="btn btn-outline-secondary option-btn py-3 text-start px-4"></button>
+                        <button class="btn btn-outline-secondary option-btn py-3 text-start px-4"></button>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between bg-white py-3">
+                    <button id="skip-btn" class="btn btn-outline-warning px-4 py-2">Boş Bırak</button>
+                    <button id="next-btn" class="btn btn-primary px-5 py-2" disabled>Kaydet ve Devam Et</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="result-screen" class="container mt-5 d-none text-center animate_animated animate_bounceIn">
+    <div class="card shadow p-5 border-0">
+        <h2 class="mb-2 fw-bold">Oyun Tamamlandı!</h2>
+        <h4 id="player-name" class="text-muted mb-4"></h4>
+        <div class="display-1 text-primary fw-bold mb-3" id="final-score">0/5</div>
+        <div id="medal-area" class="display-4 mb-4"></div>
+        <div id="answer-analysis" class="list-group text-start my-4"></div>
+        <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-success btn-lg px-4" id="restart-btn">Tekrar Oyna</button>
+            <button class="btn btn-outline-dark btn-lg px-4" id="go-home-btn">Kategori Değiştir</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exitModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: none;">
+            <div class="modal-body text-center p-5">
+                <div class="display-4 mb-3">🏠</div>
+                <h3 class="fw-bold mb-3">Ayrılmak istiyor musun?</h3>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="button" class="btn btn-danger py-3 fw-bold" id="confirmExitBtn" style="border-radius: 12px;">Evet, Başa Dön</button>
+                    <button type="button" class="btn btn-outline-secondary py-3" data-bs-dismiss="modal" style="border-radius: 12px;">Hayır, Oyuna Devam Et</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="data.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
